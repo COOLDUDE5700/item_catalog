@@ -1,19 +1,19 @@
 {% extends "item_catalog" %}
-{% block title %}Delete Item{% endblock %}
+{% block title %}Delete Category{% endblock %}
 
 {% block content %}
 <div class="container">
         <div class="col-md-12">
             <div class="row" style="margin-top: 35px;">
-                <h1>Delete Item</h1>
+                <h1>Delete Category</h1>
             </div>
             <div class="row" style="margin-top: 10px;">
-                    <h5>Are you sure you want to delete {{item.name}}?</h5>
+                    <h5>Are you sure you want to delete {{category.name}}?</h5>
                 </div>
             <div class="row" style="margin-top: 10px;">
                 <form method="POST">
                     <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt text-and-icon"></i>Delete</button>
-                    <a href="{{ url_for('view_item', item_id=item.id) }}"><button type="button" class="btn btn-success"><i class="fas fa-times text-and-icon"></i>Cancel</button></a>
+                    <a href="{{ url_for('home') }}"><button type="button" class="btn btn-success"><i class="fas fa-times text-and-icon"></i>Cancel</button></a>
                 </form>
             </div>
         </div>
