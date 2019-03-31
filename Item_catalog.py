@@ -192,7 +192,7 @@ def homepage():
     items = session.query(CategoryItem).order_by(
         CategoryItem.id.desc()).limit(5)
     return render_template(
-        'index.html', categories=categories, items=items)
+        'HOME.html', categories=categories, items=items)
 
 
 #adding a category
