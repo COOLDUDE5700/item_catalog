@@ -356,7 +356,7 @@ def delete_item(item_id):
         return render_template('deletecategory.html', item=item)
 
 # Returns the JSON of all the items in the catalog.
-@app.route('/api/v1/catalog.json')
+@app.route('/catalog/json')
 def show_catalog_json():
 
     items = session.query(Item).order_by(Item.id.desc())
@@ -365,7 +365,7 @@ def show_catalog_json():
 
 # Returns the JSON of a particular item in the catalog.
 @app.route(
-    '/api/v1/categories/<int:category_id>/item/<int:item_id>/JSON')
+    '/catalog/<int:category_id>/item/<int:item_id>/JSON')
 def catalog_item_json(category_id, item_id):
 
         item = session.query(Item)\
@@ -374,7 +374,7 @@ def catalog_item_json(category_id, item_id):
 
 
 # Returns the JSON of all the categories in the catalog.
-@app.route('/api/v1/categories/JSON')
+@app.route('/catalog/categories/JSON')
 def categories_json():
     categories = session.query(Category).all()
     return jsonify(categories=[i.serialize for i in categories])
