@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container sections">
     {% if 'username' in session %}
-    <div class="cathome>
+    <div class="row">
       <div class="col-md-12">
         <a href="{{ url_for('addcategory') }}"><button class="btn btn-primary">create new Category</button></a>
         <a href="{{ url_for('add_item') }}"><button class="btn btn-success" style="margin-left: 20px;">Add new Item</button></a>
@@ -14,7 +14,7 @@
   </div>
 
   <div class="container sections">
-            <div class="cathome">
+            <div class="row">
               <div class="col-md-4" style="background-color:black; margin-top: 6px;">
                 <h2>CATEGORIES</h2>
                 {% for category in categories %}
