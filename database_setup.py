@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-#importing modules
+# importing modules
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -8,7 +8,8 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-#creating table : user
+
+# creating table : user
 class User(Base):
     __tablename__ = "user"
 
@@ -17,7 +18,8 @@ class User(Base):
     email = Column(String(250), nullable=False)
     picture = Column(String(250))
 
-#creating table : category
+
+# creating table : category
 class Category(Base):
     __tablename__ = "category"
 
@@ -26,16 +28,17 @@ class Category(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     User = relationship(User)
 
-#return object data in easily serializable format
+# return object data in easily serializable format
     @property
     def serialize(self):
         return{
-        'id': self.id,
-        'name':self.name,
-        'user_id':self.user_id
-        }
+            'id': self.id,
+            'name': self.name,
+            'user_id': self.user_id
+            }
 
-#create table : item
+
+# create table : item
 class Item(Base):
     __tablename__ = "item"
 
@@ -48,16 +51,17 @@ class Item(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     User = relationship(User)
 
-#return object data in easily serializable format
+
+# return object data in easily serializable format
     @property
     def serialize(self):
         return{
-        'id': self.id,
-        'name': self.name,
-        'description': self.description,
-        'user_id': self.user_id,
-        'category_id': self.category_id
-        }
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'user_id': self.user_id,
+            'category_id': self.category_id
+            }
 
 engine = create_engine('sqlite:///item_catalog.db')
 Base.metadata.create_all(engine)
