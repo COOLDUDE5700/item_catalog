@@ -1,9 +1,9 @@
 
 
 body {
-    background: gold;
+    background-image: url('got.jpg');
     font-family: 'Advent Pro', 'serif';
-	font-size: 13px;
+	  font-size: 13px;
 }
 
 .text-and-icon {
@@ -38,19 +38,10 @@ ul {
 }
 
 
-.padding-top-35 {
- padding-top: 35px;
-}
-.padding-top-7 {
- padding-top: 7px;
-}
-.viewitem
-.padding-top-20 {
- padding-top: 20px;
-}
-
-.paddind-top-10 {
-  padding-top: 10px;
+.login__button--google {
+	margin-top: 1rem;
+	background: #da4635;
+	border-color: #da4635;
 }
 
 .formtxtarea {

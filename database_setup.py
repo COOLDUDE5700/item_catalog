@@ -26,7 +26,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
-    User = relationship(User)
+    user = relationship(User)
 
 # return object data in easily serializable format
     @property
@@ -62,6 +62,7 @@ class Item(Base):
             'user_id': self.user_id,
             'category_id': self.category_id
             }
+
 
 engine = create_engine('sqlite:///item_catalog.db')
 Base.metadata.create_all(engine)

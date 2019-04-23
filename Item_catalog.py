@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # importing modules
 from flask import Flask, render_template, url_for
 from flask import request, redirect, flash, jsonify, make_response
@@ -12,6 +14,7 @@ import random
 import requests
 import httplib2
 import json
+import string
 
 app = Flask(__name__)
 
@@ -19,7 +22,8 @@ CLIENT_ID = json.loads(
             open('client_secrets.json', 'r').read())['web']['client_id']
 
 # connecting to a database
-engine = create_engine('sqlite:///item_catalog.db')
+engine = create_engine('sqlite:///item_catalog.db',
+                       connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 # creating a session
 DBSession = sessionmaker(bind=engine)
@@ -109,11 +113,11 @@ def gconnect():
     login_session['provider'] = 'google'
 
 # See if the user exists. If it doesn't, make a new one.
-    user_id = get_user_id(data["email"])
+    user_id = getuserid(data["email"])
     if not user_id:
         user_id = create_user(login_session)
     login_session['user_id'] = user_id
-    outout = ''
+    output = ''
     output += '<h2>welcome '
     output += login_session['username']
     output += '!</h2>'
@@ -124,6 +128,14 @@ def gconnect():
     output += '-webkit-border-radius: 150px;-moz-border-radius: 150px;">'
     flash("you are now logged in as %s" % login_session['username'])
     return output
+
+
+def getuserid(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 
 # disconnecting the logged in user
@@ -161,10 +173,10 @@ def logout():
         del login_session['picture']
         del login_session['user_id']
         flash("You have been successfully logged out!")
-        return redirect(url_for('home'))
+        return redirect(url_for('homepage'))
     else:
         flash("You were not logged in!")
-        return redirect(url_for('home'))
+        return redirect(url_for('homepage'))
 
 
 # creating new user
@@ -182,17 +194,8 @@ def create_user(login_session):
 
 # getting user by user info
 def getUserInfo(user_id):
-    user = session.query(User).filter_by(id=user_id).one()
+    user = session.query(User).filter_by(id=user_id).all()
     return user
-
-
-# get user id
-def getUserID(email):
-    try:
-        user = session.query(User).filter_by(email=email).one()
-        return user.id
-    except:
-        return None
 
 
 # homepage
@@ -200,8 +203,8 @@ def getUserID(email):
 @app.route('/catalog/')
 def homepage():
     categories = session.query(Category).all()
-    items = session.query(CategoryItem).order_by(
-        CategoryItem.id.desc()).limit(5)
+    items = session.query(Item).order_by(
+            Item.id.desc()).limit(5)
     return render_template(
         'HOME.html', categories=categories, items=items)
 
@@ -214,7 +217,7 @@ def addCategory():
         return redirect(url_for('login'))
     elif request.method == 'POST':
         newCategory = Category(
-            name=request.form['name'],
+            name=request.form['newcategoryname'],
             user_id=login_session['user_id'])
         session.add(newCategory)
         session.commit()
@@ -226,7 +229,7 @@ def addCategory():
 
 # Editing a category
 @app.route('/catalog/<int:category_id>/edit', methods=['GET', 'POST'])
-def editCategory(category_name):
+def editCategory(category_id):
     category = session.query(Category).filter_by(id=category_id).first()
 
     if 'user_id' not in login_session:
@@ -248,8 +251,8 @@ def editCategory(category_name):
 
 # deleting a category
 @app.route('/catalog/<int:category_id>/delete', methods=['GET', 'POST'])
-def deleteCategory(category_name):
-    category = session.query(Category).filter_by(name=category_name).one()
+def deleteCategory(category_id):
+    category = session.query(Category).filter_by(id=category_id).one()
     if 'user_id' not in login_session:
         flash('you need to login to delete a category!')
         return redirect(url_for('login'))
@@ -268,6 +271,7 @@ def deleteCategory(category_name):
 # creating a new item
 @app.route("/catalog/item/new/", methods=['GET', 'POST'])
 def add_item():
+    categories = session.query(Category).all()
     if 'user_id' not in login_session:
         flash("you need to log in to create an item")
         return redirect(url_for('login'))
@@ -275,7 +279,6 @@ def add_item():
         new_item = Item(
             name=request.form['name'],
             description=request.form['description'],
-            picture=request.form['picture'],
             category_id=request.form['category'],
             user_id=login_session['user_id']
         )
@@ -288,26 +291,25 @@ def add_item():
 
 
 # vieing a specific item
-@app.route('/catalog/<int:category_id>/item/<int:catalog_item_id>/')
-def view_item(category_id, item_id):
-    category = session.query(Category).filter_by(id=category_id).one()
-    item = session.query(
-        CatalogItem).filter_by(id=catalog_item_id).one()
-    userinfo = getUserInfo(category.user_id)
+@app.route('/catalog/item/<int:item_id>/')
+def view_item(item_id):
+    category = session.query(Category).filter_by(id=Item.category_id).all()
+    item = session.query(Item).filter_by(id=item_id).one()
+    userinfo = session.query(User).filter_by(id=item.user_id).first()
     return render_template(
         'viewitem.html',
         category=category, item=item, userinfo=userinfo)
 
 
-# show ittems in a specific category
-@app.route('/catalog/<int:categories_id>')
-def Itemsincategory(categories_id):
-    category = session.query(Categories).all()
-    categories = session.query(Categories).filter_by(id=categories_id).one()
-    items = session.query(CategoryItem).filter_by(categories_id=categories.id)
-    totalitems = session.query(Item).filter_by(category_id=category.id).count()
+# show items in a specific category
+@app.route('/catalog/category/<int:category_id>/items/')
+def Itemsincategory(category_id):
+    categories = session.query(Category).filter_by(id=category_id).first()
+    items = session.query(Item).filter_by(category_id=categories.id).all()
+    totalitems = session.query(Item).\
+        filter_by(category_id=categories.id).count()
     return render_template('item.html', categories=categories, items=items,
-                           allcategories=allcategories)
+                           totalitems=totalitems)
 
 
 # Edit existing item.
@@ -327,14 +329,12 @@ def edit_item(item_id):
             item.name = request.form['name']
         if request.form['description']:
             item.description = request.form['description']
-        if request.form['picture']:
-            editedItem.picture = request.form['picture']
         if request.form['category']:
             item.category_id = request.form['category']
         session.add(item)
         session.commit()
         flash('Item successfully updated!')
-        return redirect(url_for('new_item', item_id=item_id))
+        return redirect(url_for('view_item', item_id=item_id))
     else:
         categories = session.query(Category).\
             filter_by(user_id=login_session['user_id']).all()
@@ -378,10 +378,9 @@ def show_catalog_json():
 @app.route(
     '/catalog/<int:category_id>/item/<int:item_id>/JSON')
 def catalog_item_json(category_id, item_id):
-
-        item = session.query(Item)\
+    item = session.query(Item)\
                .filter_by(id=item_id, category_id=category_id).first()
-        return jsonify(item=item.serialize)
+    return jsonify(item=item.serialize)
 
 
 # Returns the JSON of all the categories in the catalog.
@@ -394,4 +393,4 @@ def categories_json():
 if __name__ == "__main__":
     app.secret_key = 'super_secret_key'
     app.debug = True
-    app.run(host="0.0.0.0", port=8001, debug=True)
+    app.run(host="0.0.0.0", port=8079)

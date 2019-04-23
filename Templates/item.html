@@ -3,24 +3,22 @@
 
 {% block content %}
     <div class="container sections">
-        <h1>{{ category.name }}  items</h1>
-        {% if session['user_id'] == category.user_id %}
+        <h1>{{ categories.name }}  items</h1>
+        {% if session['user_id'] == categories.user_id %}
             <div class="row">
               <div class="col-md-12">
-                <a href="{{ url_for('editcategory', category_id=category.id) }}"><button class="btn btn-primary">Edit</button></a>
-                <a href="{{ url_for('deletecategory', category_id=category.id) }}"><button class="btn btn-danger">Delete</button></a>
+                <a href="{{ url_for('editCategory', category_id=categories.id) }}"><button class="btn btn-primary" style="background: black">Edit</button></a>
+                <a href="{{ url_for('deleteCategory', category_id=categories.id) }}"><button class="btn btn-primary" style="background: black">Delete</button></a>
               </div>
             </div>
         {% endif %}
 
         <div class="col-md-7" style="padding-top-10">
-          {% else %}
           <div class="items">
             {% for item in items %}
                 <a href="{{ url_for('view_item', item_id=item.id) }}"><p>{{ item.name }}</p></a>
             {% endfor %}
             </div>
-          {% endif %}
         </div>
     </div>
 {% endblock %}

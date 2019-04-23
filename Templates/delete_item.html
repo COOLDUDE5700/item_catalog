@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container">
         <div class="col-md-12">
-            <div class="padding-top-35">
+            <div class="padding-top-65">
                 <h1>Delete Item</h1>
             </div>
             <div class="padding-top-20">
@@ -12,8 +12,8 @@
                 </div>
             <div class="padding-top-10">
                 <form method="POST">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                    <a href="{{ url_for('view_item', item_id=item.id) }}"><button type="button" class="btn btn-success">Cancel</button></a>
+                    <button type="submit" class="btn btn-primary" style="background: black">Delete</button>
+                    <a href="{{ url_for('view_item', item_id=item.id) }}"><button type="button" class="btn btn-primary" style="background: black">Cancel</button></a>
                 </form>
             </div>
         </div>

@@ -1,31 +1,29 @@
 {% extends "item_catalog.html" %}
-{% block title %ITEM CATALOG{% endblock %}
 
 {% block content %}
 <div class="container sections">
     {% if 'username' in session %}
     <div class="row">
       <div class="col-md-12">
-        <a href="{{ url_for('addcategory') }}"><button class="btn btn-primary">create new Category</button></a>
-        <a href="{{ url_for('add_item') }}"><button class="btn btn-success" style="margin-left: 20px;">Add new Item</button></a>
+        <a href="{{ url_for('addCategory') }}"><button class="btn btn-primary" style="background: black">Create a new Place</button></a>
+        <a href="{{ url_for('add_item') }}"><button class="btn btn-primary" style="margin-left: 20px; background: black">Add new Character</button></a>
       </div>
     </div>
     {% endif %}
   </div>
 
   <div class="container sections">
-            <div class="row">
-              <div class="col-md-4" style="background-color:black; margin-top: 6px;">
-                <h2>CATEGORIES</h2>
-                {% for category in categories %}
-                  <a href="{{ url_for('Itemsincategory', category_id=category.id) }}"><p>{{ category.name }}</p></a>
+        <div class="row">
+              <div class="col-md-4" style= margin-top: 6px;">
+                <h2>WESTEROS</h2>
+                {% for i in categories %}
+                  <a href="{{ url_for('Itemsincategory', category_id=i.id) }}"><p>{{ i.name }}</p></a>
                 {% endfor %}
               </div>
-              <div class="offset-md-2"></div>
-              <div class="col-md-7" style="background-color:black; margin-top: 6px;">
-                <h2>ITEMS WHICH WERE RECENTLY ADDED</h2><hr>
-                {% for item in items %}
-                  <a href="{{ url_for('view_item', item_id=item.id) }}"><p>{{ item.name }}</p></a>
+              <div class="col-md-7" style= margin-top: 6px;">
+                <h2>CHARACTERS RECENTLY ADDED</h2>
+                {% for i in items %}
+                  <a href="{{ url_for('view_item', item_id=i.id) }}"><p>{{ i.name }}</p></a>
                 {% endfor %}
               </div>
             </div>

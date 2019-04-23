@@ -3,29 +3,29 @@
 
 {% block content %}
     <div class="container">
-        <div class="padding-top-35">
+        <div style="margin-top: 65px">
             <div class="col-md-7">
                <h1>Update Item {{ item.name }}</h1>
                <form method="POST">
-                    <div class="form">
-                      <label for="formtxtarea">Title</label>
-                      <input name="name" type="text" class="form" value="{{ item.name }}" required>
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">Title</label>
+                      <input name="name" type="text" class="form-control" value="{{ item.name }}" required>
                     </div>
-                    <div class="form">
-                      <label for="formtxtarea">Category</label>
-                      <select name="category" class="form" id="formtxtarea" required>
+                    <div class="form-group">
+                      <label for="exampleFormControlSelect1">Category</label>
+                      <select name="category" class="form-control" id="formtxtarea" required>
                         {% for category in categories %}
                           <option value="{{ category.id }}" {% if item.category_id == category.id %} selected {% endif %}>{{ category.name }}</option>
                         {% endfor %}
                       </select>
                     </div>
-                    <div class="form">
-                      <label for="formtxtarea">Description</label>
-                      <textarea name="description" class="form-item" id="formtxtarea" required>{{item.description}}</textarea>
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Description</label>
+                      <textarea name="description" class="form-control" id="formtxtarea" required>{{item.description}}</textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    <a href="{{ url_for('homepage') }}"><button type="button" class="btn btn-danger">Cancel</button></a>
+                    <button type="submit" class="btn btn-primary" style="background: black">Update</button>
+                    <a href="{{ url_for('homepage') }}"><button type="button" class="btn btn-primary" style="background: black">Cancel</button></a>
                   </form>
 
             </div>

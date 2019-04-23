@@ -40,7 +40,7 @@ This project is a web application ceated using the **flask** framework and suppo
 
 * run the app using the command : `$ python Item_catalog.py`
 
-* The item catalog can be accessed from a browser at localhost:8001.
+* The item catalog can be accessed from a browser at localhost:8079.
 
 <h2>JSON ENDPOINTS<h2>
 

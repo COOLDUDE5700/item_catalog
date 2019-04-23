@@ -3,22 +3,20 @@
 
 {% block content %}
     <div class="container">
-        <div class="padding-top-35">
-            <div class="col-md-7">
+        <div class="col-md-7" style= "margin-top: 65px">
                <h1>Add New Category</h1>
 
                <form name="newcategory" method="POST">
-                    <div class="form">
-                      <input name="new category name" type="text" class="form-item" required>
+                    <div class="form-group">
+                      <input name="newcategoryname" type="text" class="form-control" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" style="background: black; margin-top: 5px">Submit</button>
                     <a href="{{ url_for('homepage') }}">
-                        <button type="button" class="btn btn-danger">Cancel</button>
+                        <button type="button" class="btn btn-primary" style="background: black; margin-top: 5px">Cancel</button>
                     </a>
                 </form>
 
             </div>
         </div>
-    </div>
 {% endblock %}
