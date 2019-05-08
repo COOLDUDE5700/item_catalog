@@ -16,14 +16,13 @@ import httplib2
 import json
 import string
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='Templates')
 
 CLIENT_ID = json.loads(
             open('client_secrets.json', 'r').read())['web']['client_id']
 
 # connecting to a database
-engine = create_engine('sqlite:///item_catalog.db',
-                       connect_args={'check_same_thread': False})
+engine = create_engine('postgresql://item_catalog:item_catalog@localhost/item_catalog')
 Base.metadata.bind = engine
 # creating a session
 DBSession = sessionmaker(bind=engine)
