@@ -44,7 +44,7 @@ class Item(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    description = Column(String(250))
+    description = Column(String(5000))
     picture = Column(String(250))
     category_id = Column(Integer, ForeignKey('category.id'))
     Category = relationship(Category)
@@ -64,5 +64,5 @@ class Item(Base):
             }
 
 
-engine = create_engine('sqlite:///item_catalog.db')
+engine = create_engine('postgresql://item_catalog:item_catalog@localhost/item_catalog')
 Base.metadata.create_all(engine)
