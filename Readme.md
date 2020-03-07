@@ -52,3 +52,9 @@ JSON of all the categories in the catalog :
 `/catalog/categories/JSON`
 
 JSON of the catalog : `/catalog/json`
+
+
+![itemcat](https://user-images.githubusercontent.com/47191058/76146462-f6daba00-60b8-11ea-9bf7-6be34650fc05.PNG)
+![itemcat2](https://user-images.githubusercontent.com/47191058/76146470-fb9f6e00-60b8-11ea-9a74-546ff1564e17.PNG)
+![itemcata3](https://user-images.githubusercontent.com/47191058/76146474-fe01c800-60b8-11ea-914a-f0cbcaf727d2.PNG)
+
